@@ -1,0 +1,388 @@
+public.cp_day
+(
+    "time" timestamp without time zone NOT NULL,
+    open double precision,
+    high double precision,
+    low double precision,
+    close double precision,
+    volume integer,
+    symbol character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT cp_day_pkey PRIMARY KEY ("time", symbol)
+)
+
+public.cp_min
+(
+    "time" timestamp without time zone NOT NULL,
+    open double precision,
+    high double precision,
+    low double precision,
+    close double precision,
+    volume integer,
+    symbol text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT cp_min_pkey PRIMARY KEY ("time", symbol)
+)
+
+public.danh_sach_ma_ck
+(
+    symbol text COLLATE pg_catalog."default",
+    id integer,
+    type text COLLATE pg_catalog."default",
+    exchange text COLLATE pg_catalog."default",
+    en_organ_name text COLLATE pg_catalog."default",
+    en_organ_short_name text COLLATE pg_catalog."default",
+    organ_short_name text COLLATE pg_catalog."default",
+    organ_name text COLLATE pg_catalog."default"
+)
+
+public.hop_dong_tuong_lai
+(
+    symbol text COLLATE pg_catalog."default"
+)
+
+public.ma_ck_hnx
+(
+    symbol text COLLATE pg_catalog."default"
+)
+public.ma_ck_hose
+(
+    symbol text COLLATE pg_catalog."default"
+)
+public.ma_ck_upcom
+(
+    symbol text COLLATE pg_catalog."default"
+)
+public.ma_index
+(
+    symbol text COLLATE pg_catalog."default"
+)
+ public.ma_vn30
+(
+    symbol text COLLATE pg_catalog."default"
+)
+
+public.ma_hnx30
+(
+    symbol text COLLATE pg_catalog."default"
+)
+
+public.stock_price_board
+(
+    symbol text COLLATE pg_catalog."default", (mã)
+    ceiling integer, (trần)
+    floor integer, (sàn)
+    ref_price integer, (TC)
+    stock_type text COLLATE pg_catalog."default", (loại cổ phiếu)
+    exchange text COLLATE pg_catalog."default", (hệ thống giao dịch)
+    last_trading_date text COLLATE pg_catalog."default", (ngày giao dịch cuối)
+    listed_share integer, 
+    type text COLLATE pg_catalog."default",
+    id double precision,
+    organ_name text COLLATE pg_catalog."default",
+    prior_close_price double precision,
+    match_price integer, (Giá)
+    match_vol integer, (KL)
+    accumulated_volume integer, (Tổng khối lượng)
+    accumulated_value double precision, (Tổng giá trị)
+    avg_match_price double precision, 
+    highest integer, (cao)
+    lowest integer, (Giá sàn)
+    match_type text COLLATE pg_catalog."default", 
+    foreign_sell_volume integer, (nước ngoài bán)
+    foreign_buy_volume integer, (nước ngoài mua)
+    current_room integer, 
+    total_room double precision, (số lượng CPLH)
+    bid_1_price double precision,
+    bid_1_volume double precision,
+    bid_2_price double precision,
+    bid_2_volume double precision,
+    bid_3_price double precision,
+    bid_3_volume double precision,
+    ask_1_price double precision,
+    ask_1_volume double precision,
+    ask_2_price double precision,
+    ask_2_volume double precision,
+    ask_3_price double precision,
+    ask_3_volume double precision
+)
+
+public.chi_so_tai_chinh
+(
+    symbol text COLLATE pg_catalog."default" NOT NULL,
+    nam double precision NOT NULL,
+    ky double precision NOT NULL,
+    vay_nh_dh_vcsh double precision,
+    no_vcsh double precision,
+    tsc_d_von_csh double precision,
+    von_csh_von_dieu_le double precision,
+    vong_quay_tai_san double precision,
+    vong_quay_tsc_d double precision,
+    so_ngay_thu_tien_binh_quan double precision,
+    so_ngay_ton_kho_binh_quan double precision,
+    so_ngay_thanh_toan_binh_quan double precision,
+    chu_ky_tien double precision,
+    vong_quay_hang_ton_kho double precision,
+    bien_ebit double precision,
+    bien_loi_nhuan_gop double precision,
+    bien_loi_nhuan_rong double precision,
+    roe double precision,
+    roic double precision,
+    roa double precision,
+    ebitda double precision,
+    ebit double precision,
+    ty_suat_co_tuc double precision,
+    chi_so_thanh_toan_hien_tai double precision,
+    chi_so_thanh_toan_tien_mat double precision,
+    chi_so_thanh_toan_nhanh double precision,
+    kha_nang_chi_tra_lai_vay double precision,
+    don_bay_tai_chinh double precision,
+    pb double precision,
+    von_hoa double precision,
+    so_cp_luu_hanh double precision,
+    pe double precision,
+    ps double precision,
+    p_cash_flow double precision,
+    eps double precision,
+    bvps double precision,
+    ev_ebitda double precision,
+    CONSTRAINT chi_so_tai_chinh_pkey PRIMARY KEY (cp, nam, ky)
+)
+
+CREATE TABLE IF NOT EXISTS public.intraday
+(
+    "time" timestamp without time zone,
+    price double precision,
+    volume integer,
+    match_type text COLLATE pg_catalog."default",
+    symbol text COLLATE pg_catalog."default",
+    id integer NOT NULL,
+    CONSTRAINT intraday_pkey PRIMARY KEY (id)
+)
+
+
+VIEW:
+CREATE OR REPLACE VIEW public.symbol_price_changes
+ AS
+ WITH ranked_prices AS (
+         SELECT cp_day.symbol,
+            cp_day.close AS latest_price,
+            lag(cp_day.close) OVER (PARTITION BY cp_day.symbol ORDER BY cp_day."time") AS ref_price,
+            row_number() OVER (PARTITION BY cp_day.symbol ORDER BY cp_day."time" DESC) AS rn
+           FROM cp_day
+        )
+ SELECT spb.symbol,
+    dsm.exchange,
+    dsm.organ_name,
+    spb.ref_price,
+    spb.match_price AS latest_close,
+    spb.match_price - spb.ref_price AS change_value,
+    (spb.match_price - spb.ref_price) / spb.ref_price * 100::double precision AS change_percentage
+   FROM stock_price_board spb
+     JOIN danh_sach_ma_ck dsm ON spb.symbol = dsm.symbol
+UNION ALL
+ SELECT mi.symbol,
+    NULL::text AS exchange,
+    NULL::text AS organ_name,
+    rp.ref_price,
+    rp.latest_price AS latest_close,
+    rp.latest_price - rp.ref_price AS change_value,
+    (rp.latest_price - rp.ref_price) / NULLIF(rp.ref_price, 0::double precision) * 100::double precision AS change_percentage
+   FROM ma_index mi
+     JOIN ranked_prices rp ON mi.symbol = rp.symbol::text
+  WHERE rp.rn <= 1;
+
+
+CREATE OR REPLACE VIEW public.co_ban
+ AS
+ SELECT ds.symbol,
+    dsm.exchange,
+    cs.von_hoa AS thi_gia_von_ty,
+    cs.eps,
+    cs.pe,
+    cs.pb,
+    cs.ps,
+    cs.roa,
+    cs.roe
+   FROM ( SELECT ma_ck_hose.symbol
+           FROM ma_ck_hose
+        UNION
+         SELECT ma_ck_hnx.symbol
+           FROM ma_ck_hnx
+        UNION
+         SELECT ma_ck_upcom.symbol
+           FROM ma_ck_upcom) ds
+     JOIN danh_sach_ma_ck dsm ON ds.symbol = dsm.symbol
+     JOIN chi_so_tai_chinh cs ON ds.symbol = cs.symbol
+  WHERE cs.nam = (( SELECT max(chi_so_tai_chinh.nam) AS max
+           FROM chi_so_tai_chinh
+          WHERE chi_so_tai_chinh.symbol = ds.symbol)) AND cs.ky = (( SELECT max(chi_so_tai_chinh.ky) AS max
+           FROM chi_so_tai_chinh
+          WHERE chi_so_tai_chinh.symbol = ds.symbol AND chi_so_tai_chinh.nam = cs.nam));
+
+CREATE OR REPLACE VIEW public.ma_ck_niemyet_all
+ AS
+ SELECT ma_ck_hose.symbol
+   FROM ma_ck_hose
+UNION
+ SELECT ma_ck_hnx.symbol
+   FROM ma_ck_hnx
+UNION
+ SELECT ma_ck_upcom.symbol
+   FROM ma_ck_upcom
+UNION
+ SELECT hop_dong_tuong_lai.symbol
+   FROM hop_dong_tuong_lai
+UNION
+ SELECT ma_index.symbol
+   FROM ma_index;
+
+
+CREATE OR REPLACE VIEW public.tong_hop
+ AS
+ SELECT spb.symbol,
+    spb.ref_price AS "Tham chiếu",
+    cd.open AS "Mở cửa",
+    cd.low AS "Thấp",
+    cd.high AS "Cao",
+    spb.accumulated_volume AS "Khối lượng",
+    spb.accumulated_value AS "Giá trị",
+    ( SELECT avg(last_10_days.volume) AS avg
+           FROM ( SELECT cp_day.volume
+                   FROM cp_day
+                  WHERE cp_day.symbol::text = spb.symbol
+                  ORDER BY cp_day."time" DESC
+                 LIMIT 10) last_10_days) AS "KLTB 10 ngày",
+    cst.von_hoa AS "Thị giá vốn tỷ",
+    cst.so_cp_luu_hanh AS "Số lượng CPLH",
+    cst.pe AS "P/E",
+    cst.eps AS "EPS"
+   FROM stock_price_board spb
+     JOIN cp_day cd ON spb.symbol = cd.symbol::text
+     JOIN chi_so_tai_chinh cst ON spb.symbol = cst.symbol
+  WHERE cd."time" = (( SELECT max(cp_day."time") AS max
+           FROM cp_day
+          WHERE cp_day.symbol::text = spb.symbol)) AND cst.nam = (( SELECT max(chi_so_tai_chinh.nam) AS max
+           FROM chi_so_tai_chinh
+          WHERE chi_so_tai_chinh.symbol = spb.symbol)) AND cst.ky = (( SELECT max(chi_so_tai_chinh.ky) AS max
+           FROM chi_so_tai_chinh
+          WHERE chi_so_tai_chinh.symbol = spb.symbol AND chi_so_tai_chinh.nam = cst.nam));
+
+  CREATE OR REPLACE VIEW public.index_info
+ AS
+ WITH price_changes AS (
+         SELECT stock_price_board.symbol,
+                CASE
+                    WHEN stock_price_board.match_price > stock_price_board.ref_price THEN 'increase'::text
+                    WHEN stock_price_board.match_price < stock_price_board.ref_price THEN 'decrease'::text
+                    ELSE 'stable'::text
+                END AS change_type
+           FROM stock_price_board
+        )
+ SELECT 'VNINDEX'::text AS index,
+    sum(th."Khối lượng") AS "KL tổng",
+    sum(th."Giá trị") AS "GT tổng",
+    count(
+        CASE
+            WHEN pc.change_type = 'decrease'::text THEN 1
+            ELSE NULL::integer
+        END) AS decrease,
+    count(
+        CASE
+            WHEN pc.change_type = 'stable'::text THEN 1
+            ELSE NULL::integer
+        END) AS stable,
+    count(
+        CASE
+            WHEN pc.change_type = 'increase'::text THEN 1
+            ELSE NULL::integer
+        END) AS increase
+   FROM tong_hop th
+     JOIN price_changes pc ON th.symbol = pc.symbol
+     JOIN ma_ck_hose mch ON th.symbol = mch.symbol
+UNION ALL
+ SELECT 'HNXINDEX'::text AS index,
+    sum(th."Khối lượng") AS "KL tổng",
+    sum(th."Giá trị") AS "GT tổng",
+    count(
+        CASE
+            WHEN pc.change_type = 'decrease'::text THEN 1
+            ELSE NULL::integer
+        END) AS decrease,
+    count(
+        CASE
+            WHEN pc.change_type = 'stable'::text THEN 1
+            ELSE NULL::integer
+        END) AS stable,
+    count(
+        CASE
+            WHEN pc.change_type = 'increase'::text THEN 1
+            ELSE NULL::integer
+        END) AS increase
+   FROM tong_hop th
+     JOIN price_changes pc ON th.symbol = pc.symbol
+     JOIN ma_ck_hnx mch ON th.symbol = mch.symbol
+UNION ALL
+ SELECT 'UPCOMINDEX'::text AS index,
+    sum(th."Khối lượng") AS "KL tổng",
+    sum(th."Giá trị") AS "GT tổng",
+    count(
+        CASE
+            WHEN pc.change_type = 'decrease'::text THEN 1
+            ELSE NULL::integer
+        END) AS decrease,
+    count(
+        CASE
+            WHEN pc.change_type = 'stable'::text THEN 1
+            ELSE NULL::integer
+        END) AS stable,
+    count(
+        CASE
+            WHEN pc.change_type = 'increase'::text THEN 1
+            ELSE NULL::integer
+        END) AS increase
+   FROM tong_hop th
+     JOIN price_changes pc ON th.symbol = pc.symbol
+     JOIN ma_ck_upcom mcu ON th.symbol = mcu.symbol
+UNION ALL
+ SELECT 'VN30'::text AS index,
+    sum(th."Khối lượng") AS "KL tổng",
+    sum(th."Giá trị") AS "GT tổng",
+    count(
+        CASE
+            WHEN pc.change_type = 'decrease'::text THEN 1
+            ELSE NULL::integer
+        END) AS decrease,
+    count(
+        CASE
+            WHEN pc.change_type = 'stable'::text THEN 1
+            ELSE NULL::integer
+        END) AS stable,
+    count(
+        CASE
+            WHEN pc.change_type = 'increase'::text THEN 1
+            ELSE NULL::integer
+        END) AS increase
+   FROM tong_hop th
+     JOIN price_changes pc ON th.symbol = pc.symbol
+     JOIN ma_vn30 mv ON th.symbol = mv.symbol
+UNION ALL
+ SELECT 'HNX30'::text AS index,
+    sum(th."Khối lượng") AS "KL tổng",
+    sum(th."Giá trị") AS "GT tổng",
+    count(
+        CASE
+            WHEN pc.change_type = 'decrease'::text THEN 1
+            ELSE NULL::integer
+        END) AS decrease,
+    count(
+        CASE
+            WHEN pc.change_type = 'stable'::text THEN 1
+            ELSE NULL::integer
+        END) AS stable,
+    count(
+        CASE
+            WHEN pc.change_type = 'increase'::text THEN 1
+            ELSE NULL::integer
+        END) AS increase
+   FROM tong_hop th
+     JOIN price_changes pc ON th.symbol = pc.symbol
+     JOIN ma_hnx30 mh ON th.symbol = mh.symbol;

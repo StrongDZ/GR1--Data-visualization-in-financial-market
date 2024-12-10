@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Producer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/producer/stock_data_producer.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run Consumer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/consumer/stock_data_consumer.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run Kafka Manager",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/kafkaManager.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run Flask App",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/app.py",
+      "console": "integratedTerminal"
+    }
+  ]
+}

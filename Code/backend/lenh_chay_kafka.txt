@@ -1,0 +1,22 @@
+cd /d D:\GR1\Code\backend\consumer
+py stock_data_consumer.py
+
+cd /d D:\GR1\Code\backend\producer
+py cp_min_producer.py
+
+cd /d D:\GR1\Code\backend\producer
+py cp_day_producer.py
+
+py D:\GR1\Code\backend\start_services.py
+
+
+
+
+
+D:\GR1\kafka\bin\windows\zookeeper-server-start.bat D:\GR1\kafka\config\zookeeper.properties
+    
+D:\GR1\kafka\bin\windows\kafka-server-start.bat D:\GR1\kafka\config\server.properties
+
+
+
+

@@ -1,0 +1,25 @@
+stock-tracker-backend/
+|-- api/
+|   |-- handlers/
+|   |   |-- stock.go
+|   |   |-- historical.go
+|   |   |-- indicators.go
+|   |-- routes.go
+|-- service/
+|   |-- stock_service.go
+|   |-- historical_service.go
+|   |-- indicators_service.go
+|-- data/
+|   |-- repositories/
+|   |   |-- stock_repository.go
+|   |   |-- historical_repository.go
+|   |   |-- user_repository.go
+|   |-- database.go
+|   |-- cache.go
+|-- models/
+|   |-- stock.go
+|   |-- historical.go
+|   |-- user.go
+|-- main.go
+|-- config.yaml
+|-- README.md
