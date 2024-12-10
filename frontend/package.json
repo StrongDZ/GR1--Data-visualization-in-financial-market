@@ -1,0 +1,89 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:5000",
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.16.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "apexcharts": "^4.1.0",
+    "async_hooks": "^1.0.0",
+    "axios": "^1.7.9",
+    "chart.js": "^4.4.6",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-chart-financial": "^0.2.1",
+    "dayjs": "^1.11.13",
+    "echarts": "^5.5.1",
+    "echarts-for-react": "^3.0.2",
+    "highcharts": "^11.4.8",
+    "highcharts-indicators": "^2.1.6",
+    "highcharts-react-official": "^3.2.1",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "plotly.js-dist": "^2.35.2",
+    "react": "^18.3.1",
+    "react-apexcharts": "^1.6.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-plotly.js": "^2.6.0",
+    "react-router-dom": "^6.28.0",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.6",
+    "socket.io-client": "^4.8.1",
+    "timers-browserify": "^2.0.12",
+    "tls-browserify": "^0.2.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "assert": "^2.1.0",
+    "babel-loader": "^9.2.1",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "console-browserify": "^1.2.0",
+    "crypto-browserify": "^3.12.1",
+    "css-loader": "^7.1.2",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "node-polyfill-webpack-plugin": "^4.1.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "style-loader": "^4.0.0",
+    "typescript": "^5.7.2",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
+    "webpack-cli": "^5.1.4"
+  }
+}

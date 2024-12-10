@@ -1,0 +1,209 @@
+:root {
+  --xam-dam: #282d34;
+  --xam-vua: #2f343c;
+  --xam-nhat: #383e47;
+  --xanh: #00aa00;
+  --do: #e24037;
+  --vang:  #ccaa00;
+}
+.charts-container {
+  display: flex;
+  flex-direction: row;
+  padding: 4px;
+  background-color: var(--xam-dam);
+  height: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  padding-right: 10px; /* Khoảng cách giữa hai panel */
+}
+
+.candlestickchart-function {
+  width: 100%;
+  margin-bottom: 3px;
+  display: flex;
+  flex-direction: row;
+  background-color: #161a25;
+  gap: 5px;
+  padding: 3px;
+  height: 33px;
+}
+/* Nút tìm kiếm  */
+.search-form {
+  display: flex; /* Sử dụng flexbox để căn giữa */
+  justify-content: flex-start; /* Căn giữa theo chiều ngang */
+  align-items: center;
+}
+.search-input {
+  width: 10%; /* Chiều rộng ô input */
+  background-color: #161a25;
+  border: 0;
+  border-right: 1px solid #dddddd7f;
+  color: white;
+  
+}
+
+.search-input:focus {
+  border: none; /* Bỏ border khi focus */
+  background-color: #2f343c; /* Thay đổi màu nền khi focus */
+  outline: none; /* Bỏ outline mặc định */
+}
+
+/* Nút chỉ báo */
+.indicator-menu {
+  position: relative; /* Để menu có thể được định vị chính xác */
+}
+
+.indicator-button {
+  background-color: transparent; /* Màu nền cho nút */
+  color: white; /* Màu chữ */
+  border: none; /* Không có viền */
+  cursor: pointer; /* Con trỏ khi hover */
+  height: 100%;
+  padding-right: 9px ;
+  padding-left: 9px ;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.indicator-button:hover, .indicator-button:focus{
+  background-color: #2A2E39;
+}
+
+.indicator-list {
+  max-height: 200px; /* Chiều cao tối đa của danh sách */
+  overflow-y: auto; /* Cho phép cuộn dọc */
+  position: absolute; /* Để menu xuất hiện bên dưới nút */
+  background-color: #161a25; /* Màu nền cho menu */
+  border: 1px solid #444; /* Viền cho menu */
+  z-index: 1000; /* Đảm bảo menu nằm trên các phần tử khác */
+  list-style-type: none; /* Không có dấu chấm */
+  padding: 0; /* Không có padding */
+  margin-left: 5px; /* Không có margin */
+}
+
+.indicator-list::-webkit-scrollbar {
+  display: none; /* Ẩn thanh cuộn trên Chrome, Safari và Opera */
+}
+
+.indicator-list li {
+  width: 500px;
+  padding: 2px; /* Padding cho từng mục */
+  color: white; /* Màu chữ */
+  cursor: pointer; /* Con trỏ khi hover */
+}
+
+.indicator-list li:hover {
+  background-color: #2A2E39; /* Màu nền khi hover */
+}
+
+.right-panel {
+  display: flex;
+  width: 26%;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--xam-vua); /* Màu nền cho panel bên phải */
+  border: 1px solid #ddd; /* Đường viền cho panel */
+  border-radius: 8px; /* Bo góc cho panel */
+  height: 93%;
+}
+
+.company-info {
+  display: flex; /* Sử dụng flexbox cho container chính */
+  justify-content: space-between; /* Căn giữa giữa hai phần */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  width: 100%;
+  gap: 5px;
+  padding: 10px;
+}
+
+.info-left {
+  display: flex;
+  flex-direction: column; /* Đặt chiều dọc cho phần bên trái */
+  overflow-x: hidden;
+}
+
+.info-right {
+  display: flex;
+  flex-direction: column; /* Đặt chiều dọc cho phần bên phải */
+  align-items: flex-end; /* Căn chỉnh nội dung sang bên phải */
+  width: 45%;
+}
+
+.symbol-name {
+  font-size: 1.1rem; /* Kích thước chữ nhỏ hơn */
+  white-space: nowrap; /* Ngăn xuống dòng */
+  overflow: hidden; /* Ẩn nội dung vượt quá giới hạn */
+  text-overflow: ellipsis; /* Thay thế phần bị ẩn bằng dấu ba chấm */
+  max-width: 100%; /* Đảm bảo phần tử không vượt quá kích thước container */
+  margin-bottom: 0px;
+  height: 30px;
+  color: white;
+}
+.symbol-exchange {
+  color: rgb(79, 140, 155);
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+.ref-price {
+  font-weight: 700; /* Đặt chữ thành đậm */
+  font-size: 1.1rem; /* Kích thước chữ nhỏ hơn */
+  margin-bottom: 0;
+  height: 30px;
+  color: white;
+}
+
+.change-value {
+  font-weight: 700; /* Đặt chữ thành đậm */
+  font-size: 1.1rem; /* Kích thước chữ nhỏ hơn */
+  margin-bottom: 0;
+}
+
+.change-positive {
+  color: var(--xanh); /* Màu xanh lá cây cho giá trị dương */
+}
+
+.change-negative {
+  color: var(--do); /* Màu đỏ cho giá trị âm */
+}
+
+.change-zero {
+  color: var(--vang); /* Màu vàng cho giá trị bằng 0 */
+}
+
+.symbol-info {
+  margin-bottom: 15px; /* Khoảng cách giữa các phần */
+  font-size: 16px; /* Kích thước chữ cho thông tin symbol */
+}
+
+.button-group {
+  display: flex; /* Sử dụng flexbox để căn giữa các nút */
+  height: 23px;
+  margin-bottom: 18px;
+}
+
+.btn {
+  background-color: var(--xam-nhat); /* Màu nền mặc định cho nút */
+  color: rgb(255, 255, 255); /* Màu chữ cho nút */
+  border: 1px solid rgba(123, 122, 122, 0.5);
+  border-radius: 0px; /* Bo góc cho nút */
+  cursor: pointer; /* Con trỏ chuột khi hover */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+  height: 100%;
+  display: flex; /* Sử dụng flexbox để căn giữa */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center;
+  font-size: 0.9rem;
+  width: 95px;
+}
+
+.btn:hover {
+  background-color: #0056b3; /* Màu nền khi hover */
+}
+
+.btn.active {
+  background-color: #007bff; /* Màu nền xanh khi nút được chọn */
+  color: white; /* Màu chữ trắng khi nút được chọn */
+}

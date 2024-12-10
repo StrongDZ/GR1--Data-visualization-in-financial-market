@@ -1,0 +1,151 @@
+.so-lenh-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--xam-dam);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.prices-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sell-side,
+.buy-side {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-sell {
+  background-color: var(--xam-vua);
+  margin-bottom: 0;
+  padding-right: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  height: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  text-align: right;
+}
+.title-buy {
+  background-color: var(--xam-vua);
+  text-align: left;
+  margin-bottom: 0;
+  padding-left: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  height: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.price-item:nth-child(even) {
+  background-color: var(--xam-dam);
+}
+.price-item:nth-child(odd) {
+  background-color: var(--xam-vua);
+}
+
+.price-item {
+  color: white;
+  font-size: 0.9rem;
+  height: 32px;
+  display: flex; /* Kích hoạt Flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: space-between; 
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: 500;
+}
+
+.volume-rec-sell{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 80%;
+}
+
+.volume-rec-buy{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 80%;
+}
+
+.intraday-table {
+  width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng của component cha */
+}
+
+.table-container-intraday {
+  height: 305px; /* Chiều cao cố định cho vùng chứa bảng */
+  overflow-y: auto; /* Cho phép cuộn dọc */
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.table-header {
+  background-color: var(--xam-vua); /* Màu nền cho header */
+  z-index: 1; /* Đảm bảo header nằm trên body */
+  color: white;
+}
+
+.table-container-intraday::-webkit-scrollbar {
+  width: 0dvh;
+}
+
+
+.intraday-table table {
+  width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+  border-collapse: collapse; /* Gộp các đường viền của các ô lại với nhau */
+}
+
+.intraday-table th,
+.intraday-table td {
+  text-align: center; /* Căn giữa nội dung trong các ô */
+  padding: 8px; /* Thêm khoảng cách cho các ô */
+}
+
+.volume-summary {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.summary-item {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.total-volume-info div{
+  height: 32px;
+  display: flex; /* Kích hoạt Flexbox */
+  align-items: center; 
+  justify-content: flex-start; 
+  color:white;
+  font-size: 1rem;
+  padding-left: 5px;
+}
+
+.total-volume-info div:nth-child(odd){
+  background-color: var(--xam-vua);
+}
+.total-volume-info div:nth-child(even){
+  background-color: transparent;
+}
+
+.volume-title{
+  width: 67%;
+}
+.volume-value{
+  width: 20%;
+  text-align: right;
+  font-weight: 600;
+}
+.volume-type{
+  width: 11%;
+  text-align: right;
+}

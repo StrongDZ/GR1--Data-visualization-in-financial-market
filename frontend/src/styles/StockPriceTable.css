@@ -1,0 +1,108 @@
+.xam_nhat {
+  background-color: var(--xam_nhat);
+}
+
+.xam_dam {
+  background-color: var(--xam_dam);
+}
+
+.table-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Đảm bảo các cột có chiều rộng cố định */
+}
+
+.header-table {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.body-table {
+  margin-top: 0;
+}
+
+.body-table tbody tr:nth-child(odd) {
+  background-color: var(--den); /* Màu cho dòng lẻ */
+}
+
+.body-table tbody tr:nth-child(even) {
+  background-color: var(--den-nhat); /* Màu cho dòng chẵn */
+}
+
+/* Đảm bảo các cột trong cả hai bảng có cùng chiều rộng */
+.data-table th,
+.data-table td {
+  text-align: center;
+  font-size: 12px;
+  border: 1px solid #ababab95;
+  padding: 8px;
+  font-weight: 500;
+}
+
+.white {
+  color: white;
+}
+
+.data-table th {
+  background-color: var(--xam_xanh);
+  color: white;
+}
+.body-container {
+  height: 380px;
+  overflow-y: auto;
+  border-top: none;
+  position: relative; /* Đảm bảo thanh cuộn nằm trong phần tử này */
+}
+
+/* Tùy chỉnh thanh cuộn */
+.body-container::-webkit-scrollbar {
+  width: 0dvh;
+}
+
+/* Đảm bảo các cột căn chỉnh chính xác */
+.header-table th:nth-child(n),
+.body-table td:nth-child(n) {
+  width: calc(100% / [số cột]); /* Điều chỉnh theo số cột thực tế */
+}
+.tc-cell {
+  color: rgba(243, 200, 7, 1); /* Màu vàng cho cột TC */
+}
+
+.ceiling-cell {
+  color: rgb(205, 67, 205); /* Màu tím cho cột Trần */
+}
+
+.floor-cell {
+  color: rgb(88, 193, 211); /* Màu xanh dương nhạt cho cột Sàn */
+}
+
+.tooltip {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  z-index: 1000; /* Đảm bảo tooltip hiển thị trên các phần tử khác */
+  pointer-events: none; /* Ngăn tooltip nhận sự kiện chuột */
+}
+
+@keyframes blink-animation {
+  0% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: inherit;
+  }
+}
+
+.blink {
+  animation: blink-animation 2s ease-in-out forwards;
+}

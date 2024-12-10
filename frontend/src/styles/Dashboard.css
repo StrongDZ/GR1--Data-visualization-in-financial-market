@@ -1,0 +1,47 @@
+.container-dashboard {
+  padding: 20px;
+}
+
+.search-stock {
+  margin-bottom: 20px;
+}
+
+.block-stock{
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 600px;
+}
+
+.chart-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 100%;
+}
+.stock-search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

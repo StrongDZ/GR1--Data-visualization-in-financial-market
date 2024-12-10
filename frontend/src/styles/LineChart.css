@@ -1,0 +1,6 @@
+/* src/styles/LineChart.css */
+.linechart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

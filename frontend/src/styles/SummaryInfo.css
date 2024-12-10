@@ -1,0 +1,31 @@
+.summary-info{
+  width: 100%;
+  height: 100%;
+}
+.info-row {
+  display: flex; /* Sử dụng flexbox cho mỗi dòng */
+  justify-content: space-between; /* Căn giữa khoảng cách giữa mục và giá trị */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 35px; /* Thêm khoảng cách giữa các dòng */
+  margin-bottom: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.info-row:nth-child(odd) {
+  background-color: var(--xam-dam); /* Màu nền trắng cho dòng lẻ */
+}
+
+.info-row:nth-child(even) {
+  background-color: var(--xam-vua); /* Màu nền xám cho dòng chẵn */
+}
+
+.info-value{
+  font-size: 0.9rem;
+  font-weight: bold; 
+  color: white;
+}
+
+.info-label{
+  color: white;
+}

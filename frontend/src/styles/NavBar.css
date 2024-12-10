@@ -1,0 +1,107 @@
+:root {
+  --primary-color: #007bff;
+  --navbar-bg-color: #2F343C;
+  --navbar-text-color: #ffffff;
+  --navbar-hover-color: #007bff;
+}
+
+.navbar {
+  background-color: var(--navbar-bg-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  margin-bottom: 2px;
+}
+
+.navbar-brand {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: var(--navbar-hover-color);
+}
+
+.container-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+}
+
+.navbar-nav {
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-left: 15px;
+}
+
+.nav-link {
+  color: var(--navbar-text-color);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 5px;
+}
+
+.nav-link:hover {
+  color: var(--navbar-hover-color);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 50%;
+  background-color: var(--navbar-hover-color);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:hover::after {
+  color: var(--primary-color);
+  width: 100%;
+  left: 0;
+}
+
+.selected-nav-link {
+  color: var(--primary-color);
+  position: relative;  /* Cần thiết để tạo hiệu ứng ::after */
+}
+
+.selected-nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%; /* Đảm bảo gạch dưới chiếm toàn bộ chiều rộng */
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: var(--navbar-hover-color); /* Màu sắc giống với màu hover */
+}
+
+@media (max-width: 768px) {
+  .container-navbar {
+    flex-direction: column;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .nav-item {
+    margin: 10px 0;
+  }
+}

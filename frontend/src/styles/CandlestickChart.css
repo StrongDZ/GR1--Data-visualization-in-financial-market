@@ -1,0 +1,18 @@
+.chart-info {
+  position: absolute;
+  top: 10px; /* Khoảng cách từ trên xuống */
+  left: 10px; /* Khoảng cách từ bên trái */
+  background-color: transparent; /* Màu nền với độ trong suốt */
+  font-family: Arial, sans-serif; /* Font chữ */
+  z-index: 10; /* Đảm bảo hiển thị trên các phần tử khác */
+  pointer-events: none; /* Không cản trở các sự kiện chuột của biểu đồ */
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.chart-info .value {
+  font-size: 14px; /* Kích thước chữ cho giá trị */
+  margin-bottom: 3px; /* Khoảng cách dưới mỗi giá trị */
+  color: white;
+}

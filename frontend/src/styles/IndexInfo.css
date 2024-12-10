@@ -1,0 +1,48 @@
+/* src/styles/SymbolInfo.css */
+.linechart-index {
+  display: flex;
+  flex-direction: column;
+  width: 19.8%;
+  background-color: var(--xam_xanh);
+  border-radius: 8px;
+  height: 200px;
+  padding: 3px;
+  border: 1px solid rgba(137, 136, 136, 0.5);
+}
+
+.symbol-name-index {
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+  width: 100%;
+  color: rgb(129, 170, 241);
+}
+
+.symbol-change {
+  width: fit-content;
+  text-wrap: nowrap;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.text-info {
+  width: 100%;
+  font-size: 0.7rem;
+  color: white;
+}
+.latest-close {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: white;
+}
+.linechart-wrapper {
+  width: 100%; /* Đảm bảo chiếm 100% chiều rộng */
+  height: 80%; /* Đảm bảo chiếm 100% chiều cao của div cha */
+}
+
+.first-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px; 
+}

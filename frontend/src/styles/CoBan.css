@@ -1,0 +1,53 @@
+/* src/styles/FinancialMetricsTable.css */
+.table-wrapper-co-ban {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  .data-table-co-ban {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  .header-table-co-ban {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .body-container-co-ban {
+    height: 415px;
+    overflow-y: auto;
+    border-top: none;
+  }
+  .body-container-co-ban::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  .body-table-co-ban {
+    margin-top: 0;
+  }
+  
+  .data-table-co-ban th,
+  .data-table-co-ban td {
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid #ababab68;
+    color: white;
+    padding: 8px;
+    font-weight: 500;
+  }
+ 
+  .data-table-co-ban th{
+    background-color: var(--xam_xanh);
+  }
+
+  .body-table-co-ban tbody tr:nth-child(even) {
+    background-color: var(--den); /* Màu cho dòng lẻ */
+  }
+  
+  .body-table-co-ban tbody tr:nth-child(odd) {
+    background-color: var(--den-nhat); /* Màu cho dòng chẵn */
+  }
+  
