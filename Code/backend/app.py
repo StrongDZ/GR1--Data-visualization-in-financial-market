@@ -1,43 +1,66 @@
-from flask import Flask, jsonify
+import threading
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 from database.pgsql import PostgresManager
 from flask_cors import CORS
-from elasticsearch import Elasticsearch, helpers
+from elasticsearch import Elasticsearch
+import time
 
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# es = Elasticsearch("http://localhost:9200")
-# index_name = "symbol_price_changes"
 
 # postgre = PostgresManager("GR1_data")
-# # Chuẩn bị dữ liệu cho Elasticsearch
-# def prepare_data_for_es(df, index_name):
-#     for _, row in df.iterrows():
-#         yield {
-#             "_index": index_name,
-#             "_id": row['symbol'],  # Sử dụng symbol làm ID
-#             "_source": row.to_dict(),
-#         }
-# data = postgre.query_table("symbol_price_changes")     
-# helpers.bulk(es, prepare_data_for_es(data, index_name))
+# Prepare data for Elasticsearch
+def prepare_data_for_es():
+    postgre = PostgresManager("GR1_data")
+    index_name = "symbol_price_changes"
+    while True:
+        try:
+            data = postgre.query_table("symbol_price_changes", row_to_json=True)
+            for row in data:
+                # print(row)
+                es.index(index= index_name, id=row['symbol'], body=row)
+            time.sleep(5)
+        except Exception as e:
+            print(f"Error during periodic task: {e}")
+            time.sleep(5)  # Nếu có lỗi, đợi 5 giây rồi thử lại
+            
 
-# # Đẩy dữ liệu vào Elasticsearch
-# if not es.indices.exists(index=index_name):
-#     es.indices.create(index=index_name)
-    
 
 @app.route('/api/symbols', methods=['GET'])
 def get_symbols():
-    
+    index_name = "symbol_price_changes"
     postgre = PostgresManager("GR1_data")
     try:
-        symbols_data = postgre.query_table(table_name='ma_ck_niemyet_all', columns='symbol')
-        # print(symbols_data)
-        symbols = list(symbols_data['symbol'])  # Giả sử item['symbol'] là cách truy cập vào symbol
-        # print(symbols)
-        # print(jsonify(symbols))
+        search_query = request.args.get('q', '')
+        if search_query:
+            # Query Elasticsearch
+            print(search_query)
+            response = es.search(
+                index=index_name,
+                body={
+                    "query": {
+                        "prefix": {
+                            "symbol": search_query
+                        }
+                    },
+                    "size": 500,
+                    "sort": [
+                        {
+                            "symbol": {
+                                "order": "asc"  # "asc" là tăng dần, "desc" là giảm dần
+                            }
+                        }
+                    ]
+                }
+            )
+            symbols = [hit['_source'] for hit in response['hits']['hits']]
+            print(symbols)
+        else:
+            # If no query, return all symbols (optional)
+            symbols = []
         return jsonify(symbols)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -209,4 +232,10 @@ def handle_request_intraday_data(symbol):
         emit('error', {'message': str(e)})
 
 if __name__ == '__main__':
+       # Khởi động thread cho prepare_data_for_es để nó chạy song song với Flask server
+    data_thread = threading.Thread(target=prepare_data_for_es)
+    data_thread.daemon = True  # Đảm bảo thread này kết thúc khi chương trình chính kết thúc
+    data_thread.start()
+
+    # Chạy Flask và SocketIO
     socketio.run(app, debug=True)

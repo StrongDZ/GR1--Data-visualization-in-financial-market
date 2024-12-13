@@ -28,26 +28,91 @@
   gap: 5px;
   padding: 3px;
   height: 33px;
+  position: relative;
 }
 /* Nút tìm kiếm  */
 .search-form {
   display: flex; /* Sử dụng flexbox để căn giữa */
   justify-content: flex-start; /* Căn giữa theo chiều ngang */
   align-items: center;
+  width: 10%;
+  position: relative;
 }
 .search-input {
-  width: 10%; /* Chiều rộng ô input */
   background-color: #161a25;
   border: 0;
   border-right: 1px solid #dddddd7f;
   color: white;
-  
+  width: 100%;
+  padding-right: 35px;
+  text-transform: uppercase;
 }
 
 .search-input:focus {
   border: none; /* Bỏ border khi focus */
   background-color: #2f343c; /* Thay đổi màu nền khi focus */
   outline: none; /* Bỏ outline mặc định */
+}
+
+.search-input {
+  width: 100%;
+  padding-right: 35px;
+  text-transform: uppercase;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.search-results-container {
+  position: absolute;
+  top: 33px; /* Đặt nó ngay dưới input */
+  left: 0;
+  width: 500px;
+  max-height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #cccccc86;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: var(--xam-vua); /* Màu nền cho panel bên phải */
+  z-index: 10;
+}
+
+.search-result-item {
+  display: flex; /* Sử dụng flexbox cho container chính */
+  justify-content: space-between; /* Căn giữa giữa hai phần */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  width: 100%;
+  gap: 5px;
+  padding: 10px;
+  background-color: transparent; /* Màu nền cho panel bên phải */
+}
+
+.search-result-item:hover {
+  background-color: #eaeaea;
+}
+/* Scrollbar toàn cục */
+.search-results-container::-webkit-scrollbar {
+  width: 8px; /* Chiều rộng của thanh cuộn */
+}
+
+.search-results-container::-webkit-scrollbar-track {
+  background: #333; /* Màu nền của track (phần thanh cuộn không được kéo) */
+}
+
+.search-results-container::-webkit-scrollbar-thumb {
+  background: #888; /* Màu của phần kéo thanh cuộn */
+  border-radius: 10px; /* Độ bo góc cho phần kéo */
+}
+
+.search-results-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu của phần kéo khi hover */
+}
+
+.search-results-container::-webkit-scrollbar-corner {
+  background: #333; /* Màu nền ở góc của thanh cuộn */
 }
 
 /* Nút chỉ báo */
@@ -122,13 +187,14 @@
   display: flex;
   flex-direction: column; /* Đặt chiều dọc cho phần bên trái */
   overflow-x: hidden;
+  width: 50%;
 }
 
 .info-right {
   display: flex;
   flex-direction: column; /* Đặt chiều dọc cho phần bên phải */
   align-items: flex-end; /* Căn chỉnh nội dung sang bên phải */
-  width: 45%;
+  width: 50%;
 }
 
 .symbol-name {

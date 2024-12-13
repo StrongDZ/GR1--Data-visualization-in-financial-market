@@ -16,7 +16,8 @@ function Charts() {
   const [selectedView, setSelectedView] = useState('Tổng hợp'); // State để theo dõi view hiện tại
   const [companyData, setCompanyData] = useState({});
   const [selectedIndicators, setSelectedIndicators] = useState([]); // State để lưu các chỉ báo đã chọn
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State để quản lý việc hiển thị menu
+  const [MenuChiBao, setMenuChiBao] = useState(false); // State để quản lý việc hiển thị menu
+  const [searchResults, setSearchResults] = useState([]); // State lưu kết quả tìm kiếm
 
   useEffect(() => {
     socket.emit('request_change_data', submittedSymbol); // Gửi yêu cầu dữ liệu thay đổi cho symbol cụ thể
@@ -51,24 +52,30 @@ function Charts() {
     };
   }, [submittedSymbol]);
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-
-    try {
-      // Chờ để lấy giá trị thực sự từ Promise
-      const symbolsData = await symbols;
-
-      // Kiểm tra sự tồn tại của searchSymbol trong symbolsData
-      if (!symbolsData.includes(searchSymbol)) {
-        toast.error(`Mã "${searchSymbol}" không tồn tại!`); // Hiển thị thông báo lỗi
-      } else {
-        setSubmittedSymbol(searchSymbol); // Nếu có, cập nhật symbol đã tìm kiếm
-      }
-    } catch (error) {
-      console.error('Error fetching symbols:', error);
-      toast.error('Có lỗi khi lấy dữ liệu mã chứng khoán!');
+  useEffect(() => {
+    if (!searchSymbol) {
+      setSearchResults([]);
+      return;
     }
-  };
+    const handleSearch = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/symbols?q=${searchSymbol}`
+        );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const symbolsData = await response.json();
+        console.log(symbolsData);
+        setSearchResults(symbolsData);
+      } catch (error) {
+        console.error('Error fetching symbols:', error);
+        toast.error('Có lỗi khi lấy dữ liệu mã chứng khoán!');
+      }
+    };
+
+    handleSearch();
+  }, [searchSymbol]); // useEffect sẽ được gọi mỗi khi searchSymbol thay đổi
 
   const handleGroupSelect = (group) => {
     setSelectedView(group);
@@ -85,45 +92,79 @@ function Charts() {
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen); // Đảo ngược trạng thái menu
+    setMenuChiBao(!MenuChiBao); // Đảo ngược trạng thái menu
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Ngăn chặn hành động mặc định (tải lại trang)
+  };
+
+  const handleSymbolClick = (symbol) => {
+    setSubmittedSymbol(symbol); // Cập nhật symbol đã chọn
+    setSearchSymbol(''); // Xóa ô tìm kiếm sau khi chọn
+    setSearchResults([]); // Xóa kết quả tìm kiếm
+  };
+
   return (
     <div className="charts-container">
       <div className="left-panel">
         <div className="candlestickchart-function">
-          <form
-            onSubmit={handleSearch}
-            className="search-form"
-            style={{
-              width: '10%',
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-            }}
-          >
+          <form onSubmit={handleSubmit} className="search-form">
             <input
               type="text"
               value={searchSymbol}
-              onChange={(e) => setSearchSymbol(e.target.value.toUpperCase())}
+              onChange={(e) => {
+                setSearchSymbol(e.target.value.toUpperCase());
+              }}
               placeholder="Mã CK..."
               className="search-input"
-              style={{
-                width: '100%',
-                paddingRight: '35px',
-                textTransform: 'uppercase',
-              }} // Thêm padding bên phải để tránh chữ chồng lên biểu tượng
             />
-            <span
-              style={{ position: 'absolute', right: '10px', cursor: 'pointer' }}
-            >
-              🔎
-            </span>
+            <span className="search-icon">🔎</span>
           </form>
+          {/* Hiển thị danh sách symbol tìm được */}
+          {searchResults.length > 0 && (
+            <div className="search-results-container">
+              {searchResults.map((item) => (
+                <div
+                  key={item.symbol}
+                  className="search-result-item"
+                  onClick={() => handleSymbolClick(item.symbol)}
+                >
+                  <div className="info-left">
+                    <h5 className="symbol-name">{item['organ_name']}</h5>
+                    <p className="symbol-exchange">
+                      {item['symbol']}:{item['exchange']}
+                    </p>
+                  </div>
+                  <div className="info-right">
+                    <p className="ref-price">
+                      {formatValue1(item['latest_close'])}
+                    </p>
+                    <p
+                      className={`change-value ${
+                        item['change_value'] > 0
+                          ? 'change-positive'
+                          : item['change_value'] < 0
+                          ? 'change-negative'
+                          : 'change-zero'
+                      }`}
+                    >
+                      {item['change_value'] > 0 ? '+' : ''}
+                      {formatValue1(item['change_value'])}
+                      <span> / </span>
+                      {item['change_value'] > 0 ? '+' : ''}
+                      {formatValue1(item['change_percentage'])}%
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="indicator-menu">
             <button onClick={toggleMenu} className="indicator-button">
               ƒ Chỉ báo
             </button>
-            {isMenuOpen && (
+            {MenuChiBao && (
               <ul className="indicator-list">
                 {[
                   'MA10',
