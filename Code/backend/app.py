@@ -10,8 +10,8 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+es = Elasticsearch("http://localhost:9200")
 
-# postgre = PostgresManager("GR1_data")
 # Prepare data for Elasticsearch
 def prepare_data_for_es():
     postgre = PostgresManager("GR1_data")
